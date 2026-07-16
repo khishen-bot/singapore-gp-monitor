@@ -14,7 +14,7 @@ TOKEN_URL = "https://singaporegp.sg/api/getToken/"
 
 API_URL = "https://singaporegp.sg/ws/items/tickets?fields=slug,ticket_status,ticket_status_text,ticket_category.slug,ticket_category.group,prices.phase,prices.ticket_status,prices.ticket_status_text&filter=%7B%22_and%22%3A%5B%7B%22status%22%3A%7B%22_eq%22%3A%22published%22%7D%2C%22ticketing_date%22%3A%7B%22_between%22%3A%5B%222025-12-31T16%3A00%3A00.000Z%22%2C%222026-12-30T16%3A00%3A00.000Z%22%5D%7D%7D%5D%7D&sort=slug&limit=-1"
 
-CHECK_INTERVAL = 3600
+
 
 SEEN_FILE = "seen.json"
 
@@ -144,9 +144,7 @@ def get_tickets(token):
     return response.json()["data"]
 
 
-send_startup()
-
-while True:
+def main():
 
     try:
 
@@ -160,10 +158,7 @@ while True:
 
         for ticket in tickets:
 
-            slug = ticket.get(
-                "slug",
-                ""
-            ).lower()
+            slug = ticket.get("slug", "").lower()
 
             category = ticket.get(
                 "ticket_category",
@@ -207,46 +202,22 @@ while True:
 
                     seen.add(key)
 
-                    with open(
-                        SEEN_FILE,
-                        "w"
-                    ) as f:
+                    with open(SEEN_FILE, "w") as f:
                         json.dump(
                             list(seen),
                             f
                         )
 
-                    print(
-                        f"Alert sent: {slug}"
-                    )
-
         if not available_found:
-
-            if not NO_AVAILABILITY_SENT:
-
-                send_no_availability()
-
-                NO_AVAILABILITY_SENT = True
-
-                print(
-                    "No Sunday tickets available"
-                )
-
-        else:
-
-            NO_AVAILABILITY_SENT = False
+            send_no_availability()
 
         print(
             f"{datetime.now()} checked successfully"
         )
 
     except Exception as e:
+        print("Error:", e)
 
-        print(
-            "Error:",
-            e
-        )
 
-    time.sleep(
-        CHECK_INTERVAL
-    )
+if __name__ == "__main__":
+    main()
