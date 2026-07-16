@@ -1,6 +1,4 @@
-monitor.yml
-
-name: Singapore GP Monitor
+name: Singapore_gp_monitor
 
 on:
   schedule:
