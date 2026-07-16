@@ -13,20 +13,11 @@ import os
 
 DISCORD_WEBHOOK = os.environ["DISCORD_WEBHOOK"]
 
-
 TOKEN_URL = "https://singaporegp.sg/api/getToken/"
 
 API_URL = "https://singaporegp.sg/ws/items/tickets?fields=slug,ticket_status,ticket_status_text,ticket_category.slug,ticket_category.group,prices.phase,prices.ticket_status,prices.ticket_status_text&filter=%7B%22_and%22%3A%5B%7B%22status%22%3A%7B%22_eq%22%3A%22published%22%7D%2C%22ticketing_date%22%3A%7B%22_between%22%3A%5B%222025-12-31T16%3A00%3A00.000Z%22%2C%222026-12-30T16%3A00%3A00.000Z%22%5D%7D%7D%5D%7D&sort=slug&limit=-1"
 
-
-
-SEEN_FILE = "seen.json"
-
-if Path(SEEN_FILE).exists():
-    with open(SEEN_FILE, "r") as f:
-        seen = set(json.load(f))
-else:
-    seen = set()
+seen = set()
 
 NO_AVAILABILITY_SENT = False
 
