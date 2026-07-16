@@ -5,6 +5,11 @@ from pathlib import Path
 from datetime import datetime
 
 
+    print(
+        f"Workflow started: {datetime.utcnow()}"
+    )
+
+
 import os
 
 DISCORD_WEBHOOK = os.environ["DISCORD_WEBHOOK"]
