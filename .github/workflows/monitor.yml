@@ -2,7 +2,7 @@ name: Singapore_gp_monitor
 
 on:
   schedule:
-    - cron: "* * * * *"
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 jobs:
