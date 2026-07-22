@@ -70,6 +70,13 @@ def send_discord(ticket):
         "%Y-%m-%d %H:%M:%S"
     )
 
+    ticket_name = (
+        ticket["slug"]
+        .replace("2026-", "")
+        .replace("-", " ")
+        .title()
+    )
+
     payload = {
         "content": "@everyone 🚨 SINGAPORE GP SUNDAY TICKET AVAILABLE 🚨",
         "embeds": [
@@ -79,12 +86,6 @@ def send_discord(ticket):
                 "fields": [
                     {
                         "name": "Ticket",
-                        ticket_name = (
-                                ticket["slug"]
-                                .replace("2026-", "")
-                                .replace("-", " ")
-                                .title()
-                            )
                         "value": ticket_name,
                         "inline": False
                     },
@@ -109,6 +110,12 @@ def send_discord(ticket):
             "parse": ["everyone"]
         }
     }
+
+    requests.post(
+        DISCORD_WEBHOOK,
+        json=payload,
+        timeout=30
+    ).raise_for_status()
 
     requests.post(
         DISCORD_WEBHOOK,
