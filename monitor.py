@@ -71,6 +71,7 @@ def send_discord(ticket):
     )
 
     payload = {
+        "content": "@everyone 🚨 SINGAPORE GP SUNDAY TICKET AVAILABLE 🚨",
         "embeds": [
             {
                 "title": "🏁 Singapore GP Sunday Ticket Available",
@@ -78,7 +79,13 @@ def send_discord(ticket):
                 "fields": [
                     {
                         "name": "Ticket",
-                        "value": ticket["slug"],
+                        ticket_name = (
+                                ticket["slug"]
+                                .replace("2026-", "")
+                                .replace("-", " ")
+                                .title()
+                            )
+                        "value": ticket_name,
                         "inline": False
                     },
                     {
@@ -97,7 +104,10 @@ def send_discord(ticket):
                     }
                 ]
             }
-        ]
+        ],
+        "allowed_mentions": {
+            "parse": ["everyone"]
+        }
     }
 
     requests.post(
